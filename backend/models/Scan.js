@@ -34,6 +34,33 @@ const scanSchema = new mongoose.Schema(
       default: 0,
       min: [0, 'Total vulnerabilities cannot be negative']
     },
+    severityBreakdown: {
+      critical: { type: Number, default: 0 },
+      high: { type: Number, default: 0 },
+      medium: { type: Number, default: 0 },
+      low: { type: Number, default: 0 },
+      informational: { type: Number, default: 0 }
+    },
+    scannersRun: {
+      type: [String],
+      default: []
+    },
+    scannersUnavailable: {
+      type: [String],
+      default: []
+    },
+    scannersFailed: {
+      type: [String],
+      default: []
+    },
+    aiSummary: {
+      type: String,
+      default: null
+    },
+    errorMessage: {
+      type: String,
+      default: null
+    },
     scanStartedAt: {
       type: Date,
       default: null
@@ -50,6 +77,6 @@ const scanSchema = new mongoose.Schema(
 
 // Compound index for querying scans by project sorted by newest
 scanSchema.index({ project: 1, createdAt: -1 });
+scanSchema.index({ initiatedBy: 1, createdAt: -1 });
 
 module.exports = mongoose.model('Scan', scanSchema);
-
